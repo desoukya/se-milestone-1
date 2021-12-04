@@ -1,0 +1,148 @@
+swagger: '2.0'
+info:
+  description: The Users API for GIU New Students Registration System
+  title: GIU New Student API Service
+  version: 1.0.0
+produces:
+  - application/json
+consumes:
+  - application/json
+paths:
+  /students:
+    post:
+      consumes:
+        - application/json
+      description: Request to create a new giu student.
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Student'
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            allOf:
+              - $ref: '#/definitions/Meta'
+              - $ref: '#/definitions/DatabaseId'
+              - $ref: '#/definitions/GiuDto'
+              - $ref: '#/definitions/Student'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+    get:
+      consumes:
+        - application/json
+      description: Request to retrieve all giu students.
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            type: array
+            items:
+              allOf:
+                - $ref: '#/definitions/Meta'
+                - $ref: '#/definitions/DatabaseId'
+                - $ref: '#/definitions/GiuDto'
+                - $ref: '#/definitions/Student'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Error:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    required:
+      - code
+      - message
+  Meta:
+    properties:
+      meta:
+        properties:
+          createdAt:
+            description: The datetime stamp indicating when record was created.
+            type: string
+          updatedAt:
+            description: The datetime stamp indicating when record was updated.
+            type: string
+        required:
+          - createdAt
+          - updatedAt
+  DatabaseId:
+    properties:
+      id:
+        description: The unique databsae identifer.
+        type: string
+  Student:
+    properties:
+      firstName:
+        description: The student first name.
+        type: string
+      lastName:
+        description: The student last name.
+        type: string
+      phone:
+        properties:
+          countryCode:
+            description: The country code of the user phone number.
+            type: number
+          phoneNumber:
+            description: The student phone number.
+            type: number
+        required:
+          - countryCode
+          - phoneNumber
+      address:
+        properties:
+          country:
+            description: The country code.
+            type: string
+          countryName:
+            description: The country name.
+            type: string
+          state:
+            description: The US/CA state code.
+            type: string
+          stateName:
+            description: The state name.
+            type: string
+          city:
+            description: The locality.
+            type: string
+          zip:
+            description: The zip code.
+            type: string
+          addressLine1:
+            description: The street address.
+            type: string
+          addressLine2:
+            description: The extended street address (APT, P.O, etc).
+            type: string
+        required:
+          - country
+          - countryName
+          - city
+          - addressLine1
+    required:
+      - firstName
+      - lastName
+      - email
+      - phone
+      - address
+  GiuDto:
+    properties:
+      studentId:
+        description: The GIU student id.
+        type: string
+      emailAddress:
+        description: The GIU student email.
+        type: string
+    required:
+      - studentId
+      - emailAddress
