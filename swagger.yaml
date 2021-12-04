@@ -79,6 +79,8 @@ definitions:
       id:
         description: The unique databsae identifer.
         type: string
+    required:
+      - id
   Student:
     properties:
       firstName:
